@@ -1,0 +1,36 @@
+---
+title: "Data Visualization Lab"
+subtitle: |
+  
+  Introduction to Data Journalism (JOUR 377)
+author: "Mariam Cosmos"
+pagetitle: "Mariam Cosmos"
+date: today
+
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-location: left
+    embed-resources: true
+    link-external-newwindow: true
+
+execute:
+  warning: false
+---
+
+::: {.callout-tip icon="false"}
+## GitHub Repo Link
+
+[Mariam Cosmos's GitHub Repo](https://github.com/mejcosmos/Findings_FactChecking_Lab.git)
+:::
+
+# Part 1
+
+-   Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program.
+
+    -   3,585
+
+-   But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations.
+
+-   Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show.
