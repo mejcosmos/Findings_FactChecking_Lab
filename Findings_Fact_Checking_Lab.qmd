@@ -79,7 +79,7 @@ df_window <- df_window |>
 
 ```{r}
 #| label: total-actions
-#| echo: false 
+#| echo: true 
 
 
 # fACT 1
@@ -88,7 +88,7 @@ fact1_total_actions
 
 ```
 
-While the article states that the city issued some 3,577 warning and tickets, my analysis showed that 3,577 warnings and tickets were issues.
+While the article states that the city issued some 3,577 warning and tickets, my analysis showed that 3,584 warnings and tickets were issues. However, in class, I remember you mentioning that the actual total was 3,585. I wonder why in my analysis I got the number 3,584 instead?
 
 #### Fact-check 2:
 
@@ -96,7 +96,7 @@ While the article states that the city issued some 3,577 warning and tickets, my
 
 ```{r}
 #| label: dec-tickets-first-weeks
-#| echo: false 
+#| echo: true 
 
 dec_start <- as.Date("2024-12-01")
 
@@ -120,7 +120,7 @@ I chose December 1 - 13 as the first weeks of Deceomber. As such, my analysis co
 
 ```{r}
 #| label: warnings-in-window
-#| echo: false 
+#| echo: true 
 
 fact3_warnings_in_window <- df_window |>
   filter(is_warning) |>
@@ -132,7 +132,7 @@ fact3_warnings_in_window
 
 ```{r}
 #| label: tickets-dec 
-#| echo: false 
+#| echo: true 
 
 
 tickets_dec <- df_dec_first_weeks |>
@@ -158,9 +158,7 @@ fact3_bike_lane_tickets
 
 ```
 
-In my analysis, it shows that 3,571 warnings were issued during the first weeks of the program. However, my analysis confirmed that 8 were bus lane violations and 5 were bike lane violations.
-
-if records were corrected after publication, or if slightly different date interpretations were applied. Rather than adjusting the count to force a match, the more transparent approach is to report the verifiable number from the dataset analyzed and clearly explain the possible reasons for the discrepancy.
+Based on my analysis, the main discrepancies appeared in the first and second fact-checks. The first being, the article stating that 3,577 warnings and tickets were issued, whereas I got 3,584. Furthermore, the second fact check, where my dataset produced 3,571 warnings compared with the article’s “at least 3,564.” These differences are small. It could stem from slight date-range interpretation differences, late data updates, or record corrections after publication rather than an analytical error. All other ticket subtype counts, including eight bus-lane and five bike-lane violations, aligned with the story, and I was able to verify most of the claims made in the article using the available dataset.
 
 :::
 
@@ -169,12 +167,6 @@ if records were corrected after publication, or if slightly different date inter
 ## Part 2: Extend your fact-check to another data set
 
 This dataset was sourced frm the Chicago Finance Department, and the data was used in a Streetsblog Chicago article, "Stay in your lane or pay the fine" by John Greenfield, on the Smart Streets pilot program.
-
--   Copy the paragraphs and images from the story into your doc, highlighting the facts that you checked. Describe your process.
-
--   Flag any discrepancies or anything that seemed unclear.
-
--   Were there any data-driven facts in the story that you couldn't check? What would be your next steps if you were fact-checking this story?
 
 #### Fact-check 1:
 
@@ -242,7 +234,7 @@ sum(cta_bus$fine_level_1 > 0, na.rm = TRUE)
 
 ```
 
-To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, as opposed to the reported 2,204 incidents in the article.
+To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, as opposed to the reported 2,204 incidents in the article. Similarly, my analysis showed that 615 of the incidents came with a fine, dictated by violation type.
 
 #### Fact-check 3:
 
@@ -256,9 +248,13 @@ nrow(smart_streets_data)
 
 ```
 
-Similarly, while the article states that the Smart Streets program total has issued 44,390 warnings and violations, my analysis showed that there were 51,165 warnings and violations.
+Furthermore, the article states that the Smart Streets program total has issued 44,390 warnings and violations, my analysis showed that there were 51,165 warnings and violations.
 
-While I do not have access to the crash data nor the figures that include cost of buses and other operational cost, if I did have access to these data sets, it would be interesting to fact check the following claims:
+When I examined how many of those incidents resulted in a monetary penalty by summing rows where fine_level_1 was greater than zero, my analysis produced 615 fined incidents compared with the reported 617.
+
+The only substantial discrepancy appeared when verifying the article’s claim that the Smart Streets program had issued 44,390 total warnings and violations overall. Counting all rows in the dataset produced 51,165 records. Unlike the one- or two-record gaps above, this suggests the article may have relied on an earlier dataset version.
+
+While I do not have access to the crash data nor the figures that include cost of buses and other operational cost, if I did have access to these data sets, it would be interesting to fact check the following claims made in the article:
 
 -   "Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it's not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future."
 
@@ -272,9 +268,11 @@ While I do not have access to the crash data nor the figures that include cost o
 
 # Part 3: Exchange lab work
 
-I shared my qmd and HTML with Dina Drogin.
+I shared my lab work with Dina Drogin.
 
-Summarize your process in a paragraph or two.
+Across both parts, my fact-checking process focused on reproducing each article’s quantitative claims directly from the underlying Smart Streets datasets using R. I began by importing the spreadsheets from the Chicago Finance Department, cleaning column names, and converting date fields so I could reliably filter to the exact time windows referenced in each story. From there, I verified totals by counting rows after applying simple filters, and I distinguished warnings from tickets by searching for the word “WARNING” in the violation descriptions. For more detailed claims, such as bus-lane versus bike-lane tickets or bus-mounted versus vehicle-mounted cameras, I used keyword matching and camera ID prefixes to categorize records before producing counts.
+
+Most of the figures in both articles were reproducible or very close to the published numbers, with only minor differences of one to several records in some early totals. These small gaps are not especially concerning. The only substantial discrepancy appeared in the second article’s overall program total, where the dataset contained noticeably more records than reported, suggesting the journalist may have relied on an earlier version of the dataset.
 
 :::
 
@@ -282,6 +280,10 @@ Summarize your process in a paragraph or two.
 
 # Part 4: Best practices
 
-Based on the labs and readings, what are three best practices you'll keep in mind when fact-checking data-driven work for publication?
+Based on the labs and readings, the following are three best practices I'll keep in mind when fact-checking data-driven work for publication:
+
+1.  I should verify the time frame and data version, since small differences in dates or updated datasets can change totals.
+2.  Do not filter and do the analysis on the raw dataset, instead make a copy.
+3.  While I am most familiar with R, I should work on my data analysis and fact-checking on spreadsheets or Excel. I do not think R was the best platform to do this kind of fact-checking because I think using R made it overly complicated.
 
 :::

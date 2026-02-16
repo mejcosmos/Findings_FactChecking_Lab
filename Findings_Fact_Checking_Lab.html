@@ -3166,11 +3166,14 @@ GitHub Repo Link
 <li>“Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program.”</li>
 </ul>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fACT 1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>fact1_total_actions <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df_window)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fact1_total_actions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3584</code></pre>
 </div>
 </div>
-<p>While the article states that the city issued some 3,577 warning and tickets, my analysis showed that 3,577 warnings and tickets were issues.</p>
+<p>While the article states that the city issued some 3,577 warning and tickets, my analysis showed that 3,584 warnings and tickets were issues. However, in class, I remember you mentioning that the actual total was 3,585. I wonder why in my analysis I got the number 3,584 instead?</p>
 </section>
 <section id="fact-check-2" class="level4">
 <h4 class="anchored" data-anchor-id="fact-check-2">Fact-check 2:</h4>
@@ -3178,6 +3181,16 @@ GitHub Repo Link
 <li>“But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations.”</li>
 </ul>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dec_start <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">&quot;2024-12-01&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df_dec_first_weeks <span class="ot">&lt;-</span> df_window <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> dec_start <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2024-12-13&quot;</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>fact2_tickets_dec_first_weeks <span class="ot">&lt;-</span> df_dec_first_weeks <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_ticket) <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>fact2_tickets_dec_first_weeks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 13</code></pre>
 </div>
@@ -3190,20 +3203,43 @@ GitHub Repo Link
 <li>“Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show.”</li>
 </ul>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fact3_warnings_in_window <span class="ot">&lt;-</span> df_window <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_warning) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>fact3_warnings_in_window</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3571</code></pre>
 </div>
 </div>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tickets_dec <span class="ot">&lt;-</span> df_dec_first_weeks <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(is_ticket) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ticket_type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(<span class="fu">str_to_upper</span>(violation_description), <span class="st">&quot;BUS</span><span class="sc">\\</span><span class="st">s*LANE&quot;</span>) <span class="sc">~</span> <span class="st">&quot;bus_lane&quot;</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(<span class="fu">str_to_upper</span>(violation_description), <span class="st">&quot;BIKE|BICYCLE&quot;</span>) <span class="sc">~</span> <span class="st">&quot;bike_lane&quot;</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;other&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ticket_type_counts <span class="ot">&lt;-</span> tickets_dec <span class="sc">|&gt;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(ticket_type, <span class="at">name =</span> <span class="st">&quot;n&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>fact3_bus_lane_tickets  <span class="ot">&lt;-</span> tickets_dec <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ticket_type <span class="sc">==</span> <span class="st">&quot;bus_lane&quot;</span>)  <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>fact3_bike_lane_tickets <span class="ot">&lt;-</span> tickets_dec <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ticket_type <span class="sc">==</span> <span class="st">&quot;bike_lane&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>fact3_bus_lane_tickets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fact3_bike_lane_tickets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
 </div>
-<p>In my analysis, it shows that 3,571 warnings were issued during the first weeks of the program. However, my analysis confirmed that 8 were bus lane violations and 5 were bike lane violations.</p>
-<p>if records were corrected after publication, or if slightly different date interpretations were applied. Rather than adjusting the count to force a match, the more transparent approach is to report the verifiable number from the dataset analyzed and clearly explain the possible reasons for the discrepancy.</p>
+<p>Based on my analysis, the main discrepancies appeared in the first and second fact-checks. The first being, the article stating that 3,577 warnings and tickets were issued, whereas I got 3,584. Furthermore, the second fact check, where my dataset produced 3,571 warnings compared with the article’s “at least 3,564.” These differences are small. It could stem from slight date-range interpretation differences, late data updates, or record corrections after publication rather than an analytical error. All other ticket subtype counts, including eight bus-lane and five bike-lane violations, aligned with the story, and I was able to verify most of the claims made in the article using the available dataset.</p>
 <p>:::</p>
 <p>:::</p>
 </section>
@@ -3211,41 +3247,36 @@ GitHub Repo Link
 <section id="part-2-extend-your-fact-check-to-another-data-set" class="level2">
 <h2 class="anchored" data-anchor-id="part-2-extend-your-fact-check-to-another-data-set">Part 2: Extend your fact-check to another data set</h2>
 <p>This dataset was sourced frm the Chicago Finance Department, and the data was used in a Streetsblog Chicago article, “Stay in your lane or pay the fine” by John Greenfield, on the Smart Streets pilot program.</p>
-<ul>
-<li><p>Copy the paragraphs and images from the story into your doc, highlighting the facts that you checked. Describe your process.</p></li>
-<li><p>Flag any discrepancies or anything that seemed unclear.</p></li>
-<li><p>Were there any data-driven facts in the story that you couldn’t check? What would be your next steps if you were fact-checking this story?</p></li>
-</ul>
 <section id="fact-check-1-1" class="level4">
 <h4 class="anchored" data-anchor-id="fact-check-1-1">Fact-check 1:</h4>
 <ul>
 <li>“The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period.”</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>smart_streets_data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;DATA_PART2/FOIA_Keifer_Smart_Streets_Data_01052026.xlsx&quot;</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>smart_streets_data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;DATA_PART2/FOIA_Keifer_Smart_Streets_Data_01052026.xlsx&quot;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>smart_streets_data <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">issue_day =</span> <span class="fu">as.Date</span>(issue_date))</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>date_window <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(issue_day <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-11-14&quot;</span>),</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         issue_day <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-12-31&quot;</span>))</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>cta_bus <span class="ot">&lt;-</span> date_window <span class="sc">|&gt;</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^FI&quot;</span>),</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^DT&quot;</span>))</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cta_bus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>smart_streets_data <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">issue_day =</span> <span class="fu">as.Date</span>(issue_date))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>date_window <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(issue_day <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-11-14&quot;</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>         issue_day <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-12-31&quot;</span>))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>cta_bus <span class="ot">&lt;-</span> date_window <span class="sc">|&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^FI&quot;</span>),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^DT&quot;</span>))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cta_bus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2203</code></pre>
 </div>
@@ -3257,24 +3288,24 @@ GitHub Repo Link
 <li>“Although most initial enforcement were no-cost warnings, the bus cameras captured 2,204 incidents, 617 of which came with a fine, dictated by violation type.”</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set the date window</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>date_window <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">issue_day =</span> <span class="fu">as.Date</span>(issue_date)) <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(issue_day <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-11-14&quot;</span>),</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>         issue_day <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-12-31&quot;</span>))</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># CTA bus cameras </span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>cta_bus <span class="ot">&lt;-</span> date_window <span class="sc">|&gt;</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^FI&quot;</span>),</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^DT&quot;</span>))</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># fined count check</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(cta_bus<span class="sc">$</span>fine_level_1 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set the date window</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>date_window <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">issue_day =</span> <span class="fu">as.Date</span>(issue_date)) <span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(issue_day <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-11-14&quot;</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         issue_day <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-12-31&quot;</span>))</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># CTA bus cameras </span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>cta_bus <span class="ot">&lt;-</span> date_window <span class="sc">|&gt;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^FI&quot;</span>),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^DT&quot;</span>))</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># fined count check</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(cta_bus<span class="sc">$</span>fine_level_1 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 615</code></pre>
 </div>
 </div>
-<p>To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, as opposed to the reported 2,204 incidents in the article.</p>
+<p>To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, as opposed to the reported 2,204 incidents in the article. Similarly, my analysis showed that 615 of the incidents came with a fine, dictated by violation type.</p>
 </section>
 <section id="fact-check-3-1" class="level4">
 <h4 class="anchored" data-anchor-id="fact-check-3-1">Fact-check 3:</h4>
@@ -3282,13 +3313,15 @@ GitHub Repo Link
 <li>“Overall, the Smart Streets program total has issued 44,390 warnings and violations. To reiterate, this is only with eight DOF vehicles and 6 buses equipped with the technology, indicating how common this really is. The intent is to dissuade this behavior for the benefit of all users, primarily the most vulnerable like pedestrians and cyclists.”</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(smart_streets_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(smart_streets_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 51165</code></pre>
 </div>
 </div>
-<p>Similarly, while the article states that the Smart Streets program total has issued 44,390 warnings and violations, my analysis showed that there were 51,165 warnings and violations.</p>
-<p>While I do not have access to the crash data nor the figures that include cost of buses and other operational cost, if I did have access to these data sets, it would be interesting to fact check the following claims:</p>
+<p>Furthermore, the article states that the Smart Streets program total has issued 44,390 warnings and violations, my analysis showed that there were 51,165 warnings and violations.</p>
+<p>When I examined how many of those incidents resulted in a monetary penalty by summing rows where fine_level_1 was greater than zero, my analysis produced 615 fined incidents compared with the reported 617.</p>
+<p>The only substantial discrepancy appeared when verifying the article’s claim that the Smart Streets program had issued 44,390 total warnings and violations overall. Counting all rows in the dataset produced 51,165 records. Unlike the one- or two-record gaps above, this suggests the article may have relied on an earlier dataset version.</p>
+<p>While I do not have access to the crash data nor the figures that include cost of buses and other operational cost, if I did have access to these data sets, it would be interesting to fact check the following claims made in the article:</p>
 <ul>
 <li><p>“Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it’s not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future.”</p></li>
 <li><p>“The cost to deploy the system on the first six buses is $315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras,” said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements.</p></li>
@@ -3300,14 +3333,20 @@ GitHub Repo Link
 </section>
 <section id="part-3-exchange-lab-work" class="level1">
 <h1>Part 3: Exchange lab work</h1>
-<p>I shared my qmd and HTML with Dina Drogin.</p>
-<p>Summarize your process in a paragraph or two.</p>
+<p>I shared my lab work with Dina Drogin.</p>
+<p>Across both parts, my fact-checking process focused on reproducing each article’s quantitative claims directly from the underlying Smart Streets datasets using R. I began by importing the spreadsheets from the Chicago Finance Department, cleaning column names, and converting date fields so I could reliably filter to the exact time windows referenced in each story. From there, I verified totals by counting rows after applying simple filters, and I distinguished warnings from tickets by searching for the word “WARNING” in the violation descriptions. For more detailed claims, such as bus-lane versus bike-lane tickets or bus-mounted versus vehicle-mounted cameras, I used keyword matching and camera ID prefixes to categorize records before producing counts.</p>
+<p>Most of the figures in both articles were reproducible or very close to the published numbers, with only minor differences of one to several records in some early totals. These small gaps are not especially concerning. The only substantial discrepancy appeared in the second article’s overall program total, where the dataset contained noticeably more records than reported, suggesting the journalist may have relied on an earlier version of the dataset.</p>
 <p>:::</p>
 <p>:::</p>
 </section>
 <section id="part-4-best-practices" class="level1">
 <h1>Part 4: Best practices</h1>
-<p>Based on the labs and readings, what are three best practices you’ll keep in mind when fact-checking data-driven work for publication?</p>
+<p>Based on the labs and readings, the following are three best practices I’ll keep in mind when fact-checking data-driven work for publication:</p>
+<ol type="1">
+<li>I should verify the time frame and data version, since small differences in dates or updated datasets can change totals.</li>
+<li>Do not filter and do the analysis on the raw dataset, instead make a copy.</li>
+<li>While I am most familiar with R, I should work on my data analysis and fact-checking on spreadsheets or Excel. I do not think R was the best platform to do this kind of fact-checking because I think using R made it overly complicated.</li>
+</ol>
 <p>:::</p>
 </section>
 
