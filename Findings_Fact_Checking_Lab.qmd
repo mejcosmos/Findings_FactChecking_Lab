@@ -29,13 +29,127 @@ execute:
 
 ## Part 1: Fact-check a news story
 
--   Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program.
+This dataset was sourced frm the Chicago Finance Department. The data was used in a Chicago Tribune story, "Downtown bike- and bus-lane ticketing program generates more than 3,500 warnings and violations in its first weeks" by Sarah Freishtat, on the Smart Streets pilot program. 
 
-    -   3,585
+Summarize the following:
 
--   But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations.
+What was your methodology for reproducing the analysis?
+Did you get the same numbers as those reported in the story?
+How would you handle any potential discrepancies?
 
--   Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show.
+
+```{r}
+#| label: load-packages-data
+#| echo: false 
+
+# Packages
+library(readxl)
+library(dplyr)
+library(lubridate)
+library(janitor)
+library(stringr)
+
+# load data 
+library(readxl)
+factcheck_dataset <- FOIA_KIEFER_WBEZ_Smart_Streets_data_122024 <- read_excel("DATA/FOIA_KIEFER_WBEZ_Smart_Streets data_122024.xlsx")
+
+# clean names and parse date/time
+df <- factcheck_dataset |>
+  clean_names() |>
+  mutate(
+    date = as.Date(date)
+    #time = suppressWarnings(hms::as_hms(time))
+  )
+
+# check of columns present
+# names(df)
+
+df_window <- df |>
+  filter(date >= as.Date("2024-11-06") &
+         date <= as.Date("2024-12-13"))
+
+# Classify WARNING vs TICKET
+df_window <- df_window |>
+  mutate(
+    is_warning = str_detect(str_to_upper(violation_description), "WARNING"),
+    is_ticket  = !is_warning
+  )
+
+
+```
+
+"Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program."
+
+```{r}
+#| label: total-actions
+#| echo: false 
+
+
+# fACT 1
+fact1_total_actions <- nrow(df_window)
+fact1_total_actions
+
+```
+
+"But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations."
+
+```{r}
+#| label: dec-tickets-first-weeks
+#| echo: false 
+
+dec_start <- as.Date("2024-12-01")
+
+df_dec_first_weeks <- df_window |>
+  filter(date >= dec_start & date <= as.Date("2024-12-13"))
+
+fact2_tickets_dec_first_weeks <- df_dec_first_weeks |>
+  filter(is_ticket) |>
+  nrow()
+
+fact2_tickets_dec_first_weeks
+
+
+```
+
+"Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show."
+
+```{r}
+#| label: warnings-in-window
+#| echo: false 
+
+fact3_warnings_in_window <- df_window |>
+  filter(is_warning) |>
+  nrow()
+
+fact3_warnings_in_window
+
+```
+
+```{r}
+#| label: tickets-dec 
+#| echo: false 
+
+
+tickets_dec <- df_dec_first_weeks |>
+  filter(is_ticket) |>
+  mutate(
+    ticket_type = case_when(
+      str_detect(str_to_upper(violation_description), "BUS\\s*LANE") ~ "bus_lane",
+      str_detect(str_to_upper(violation_description), "BIKE|BICYCLE") ~ "bike_lane",
+      TRUE ~ "other"
+    )
+  )
+
+ticket_type_counts <- tickets_dec |>
+  count(ticket_type, name = "n") |>
+  arrange(desc(n))
+
+fact3_bus_lane_tickets  <- tickets_dec %>% filter(ticket_type == "bus_lane")  %>% nrow()
+fact3_bike_lane_tickets <- tickets_dec %>% filter(ticket_type == "bike_lane") %>% nrow()
+
+fact3_bus_lane_tickets
+
+```
 
 :::
 
@@ -43,7 +157,24 @@ execute:
 :::
 
 ### Part 2: Extend your fact-check to another data set
+This dataset was sourced frm the Chicago Finance Department. The data was used in a Streetsblog Chicago article, "Stay in your lane or pay the fine" by John Greenfield, on the Smart Streets pilot program.
 
+
+"The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period."
+
+"Although most initial enforcement were no-cost warnings, the bus cameras captured 2,204 incidents, 617 of which came with a fine, dictated by violation type. The City netted $65,000 in the period, half a million dollars if extrapolated to a full year at the same rate. Scaled up on more routes and more of the city, the program would have no problem paying for itself."
+
+"The cost to deploy the system on the first six buses is $315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras," said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements. 
+
+"Overall, the Smart Streets program total has issued 44,390 warnings and violations. To reiterate, this is only with eight DOF vehicles and 6 buses equipped with the technology, indicating how common this really is. The intent is to dissuade this behavior for the benefit of all users, primarily the most vulnerable like pedestrians and cyclists." 
+
+
+"Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it's not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future."
+
+"This data is well visualized with the Chicago Crash Dashboard, created by Michael McLean from Strong Towns Chicago. He estimated that downtown collisions resulted in roughly $240 million in economic costs."
+
+
+--> Crash data
 
 
 :::
@@ -54,8 +185,12 @@ execute:
 
 
 
+ASK SOMEONE TO EXCHANGE IN CLASS 
 
 
+Exchange a lab assignment with another student. Share your source data and data diary, explaining your general process for arriving at your findings. See if you can verify each other's work.
+
+Summarize your process in a paragraph or two.
 
 
 :::
@@ -65,6 +200,7 @@ execute:
 
 ### Part 4: Best practices
 
+Based on the labs and readings, what are three best practices you'll keep in mind when fact-checking data-driven work for publication?
 
 
 :::
