@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Mariam Cosmos">
-<meta name="dcterms.date" content="2026-02-15">
+<meta name="dcterms.date" content="2026-02-16">
 
 <title>Mariam Cosmos</title>
 <style>
@@ -20,6 +20,40 @@ ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
 width: 0.8em;
 margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
+}
+
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+}
+pre.numberSource { margin-left: 3em; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -3088,7 +3122,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 15, 2026</p>
+      <p class="date">February 16, 2026</p>
     </div>
   </div>
   
@@ -3119,19 +3153,28 @@ GitHub Repo Link
 <p>This dataset was sourced frm the Chicago Finance Department. The data was used in a Chicago Tribune story, “Downtown bike- and bus-lane ticketing program generates more than 3,500 warnings and violations in its first weeks” by Sarah Freishtat, on the Smart Streets pilot program.</p>
 <p>Summarize the following:</p>
 <p>What was your methodology for reproducing the analysis? Did you get the same numbers as those reported in the story? How would you handle any potential discrepancies?</p>
-<p>“Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program.”</p>
+<p>To reproduce the analysis, I imported the Chicago Finance Department Smart Streets dataset into R and standardized the column names using janitor::clean_names(). I converted the date column to a Date format so I could reliably filter by time period. I then filtered the dataset to the window referenced in the story (Nov. 6 through Dec. 13, 2024) and counted the number of rows to measure total enforcement actions. To distinguish warnings from tickets, I created two logical variables based on whether the violation_description field contained the word “WARNING.” I repeated this filtering process for the first weeks of December (Dec. 1–Dec. 13) to isolate ticket counts and then used keyword matching (“BUS LANE,” “BIKE,” or “BICYCLE”) within the violation description to categorize ticket types. All totals were produced by counting rows after applying these filters, rather than relying on any pre-aggregated summaries.</p>
+<ul>
+<li>“Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program.”</li>
+</ul>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3584</code></pre>
 </div>
 </div>
-<p>“But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations.”</p>
+<p>While the article states that the city issued some 3,577 warning and tickets, my analysis showed that 3,577 warnings and tickets were issues.</p>
+<ul>
+<li>“But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations.”</li>
+</ul>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 13</code></pre>
 </div>
 </div>
-<p>“Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show.”</p>
+<p>I chose December 1 - 13 as the first weeks of Deceomber. As such, my analysis confirmed that 13 tickets were issued.</p>
+<ul>
+<li>“Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show.”</li>
+</ul>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3571</code></pre>
@@ -3141,26 +3184,91 @@ GitHub Repo Link
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8</code></pre>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
 </div>
+</div>
+<p>In my analysis, it shows that 3,571 warnings were issued during the first weeks of the program. However, my analysis confirmed that 8 were bus lane violations and 5 were bike lane violations.</p>
+<p>if records were corrected after publication, or if slightly different date interpretations were applied. Rather than adjusting the count to force a match, the more transparent approach is to report the verifiable number from the dataset analyzed and clearly explain the possible reasons for the discrepancy.</p>
 <p>:::</p>
 <p>:::</p>
 <section id="part-2-extend-your-fact-check-to-another-data-set" class="level3">
 <h3 class="anchored" data-anchor-id="part-2-extend-your-fact-check-to-another-data-set">Part 2: Extend your fact-check to another data set</h3>
-<p>This dataset was sourced frm the Chicago Finance Department. The data was used in a Streetsblog Chicago article, “Stay in your lane or pay the fine” by John Greenfield, on the Smart Streets pilot program.</p>
-<p>“The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period.”</p>
+<p>This dataset was sourced frm the Chicago Finance Department, and the data was used in a Streetsblog Chicago article, “Stay in your lane or pay the fine” by John Greenfield, on the Smart Streets pilot program.</p>
+<ul>
+<li>Copy the paragraphs and images from the story into your doc, highlighting the facts that you checked. Describe your process.</li>
+<li>Flag any discrepancies or anything that seemed unclear.</li>
+<li>Were there any data-driven facts in the story that you couldn’t check? What would be your next steps if you were fact-checking this story?</li>
+</ul>
+<p>MY ANSWERS: “The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period.”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>smart_streets_data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;DATA_PART2/FOIA_Keifer_Smart_Streets_Data_01052026.xlsx&quot;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>smart_streets_data <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">issue_day =</span> <span class="fu">as.Date</span>(issue_date))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>date_window <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(issue_day <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-11-14&quot;</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         issue_day <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-12-31&quot;</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>cta_bus <span class="ot">&lt;-</span> date_window <span class="sc">|&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^FI&quot;</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^DT&quot;</span>))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cta_bus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2203</code></pre>
+</div>
+</div>
 <p>“Although most initial enforcement were no-cost warnings, the bus cameras captured 2,204 incidents, 617 of which came with a fine, dictated by violation type. The City netted $65,000 in the period, half a million dollars if extrapolated to a full year at the same rate. Scaled up on more routes and more of the city, the program would have no problem paying for itself.”</p>
-<p>“The cost to deploy the system on the first six buses is $315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras,” said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements.</p>
-<p>“Overall, the Smart Streets program total has issued 44,390 warnings and violations. To reiterate, this is only with eight DOF vehicles and 6 buses equipped with the technology, indicating how common this really is. The intent is to dissuade this behavior for the benefit of all users, primarily the most vulnerable like pedestrians and cyclists.”</p>
-<p>“Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it’s not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future.”</p>
-<p>“This data is well visualized with the Chicago Crash Dashboard, created by Michael McLean from Strong Towns Chicago. He estimated that downtown collisions resulted in roughly $240 million in economic costs.”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set the date window</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>date_window <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">issue_day =</span> <span class="fu">as.Date</span>(issue_date)) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(issue_day <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-11-14&quot;</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>         issue_day <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-12-31&quot;</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># CTA bus cameras </span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>cta_bus <span class="ot">&lt;-</span> date_window <span class="sc">|&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^FI&quot;</span>),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">str_detect</span>(speed_camera_id, <span class="st">&quot;^DT&quot;</span>))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># fined count check</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(cta_bus<span class="sc">$</span>fine_level_1 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 615</code></pre>
+</div>
+</div>
+<p>To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, closely matching the CTA’s reported 2,204 incidents. This indicates that numeric camera IDs correspond to bus-mounted cameras, while FI and DT prefixes represent vehicle-mounted CDOT/DOF systems.</p>
+<ul>
+<li>“Overall, the Smart Streets program total has issued 44,390 warnings and violations. To reiterate, this is only with eight DOF vehicles and 6 buses equipped with the technology, indicating how common this really is. The intent is to dissuade this behavior for the benefit of all users, primarily the most vulnerable like pedestrians and cyclists.”</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(smart_streets_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 51165</code></pre>
+</div>
+</div>
 <p>–&gt; Crash data</p>
+<p>“Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it’s not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future.”</p>
+<p>–&gt; Cost “The cost to deploy the system on the first six buses is $315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras,” said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements.</p>
+<p>“This data is well visualized with the Chicago Crash Dashboard, created by Michael McLean from Strong Towns Chicago. He estimated that downtown collisions resulted in roughly $240 million in economic costs.”</p>
 <p>:::</p>
 <p>:::</p>
 </section>
 <section id="part-3-exchange-lab-work" class="level3">
 <h3 class="anchored" data-anchor-id="part-3-exchange-lab-work">Part 3: Exchange lab work</h3>
-<p>ASK SOMEONE TO EXCHANGE IN CLASS</p>
-<p>Exchange a lab assignment with another student. Share your source data and data diary, explaining your general process for arriving at your findings. See if you can verify each other’s work.</p>
+<p>I shared my qmd and HTML with Dina Drogin.</p>
 <p>Summarize your process in a paragraph or two.</p>
 <p>:::</p>
 <p>:::</p>

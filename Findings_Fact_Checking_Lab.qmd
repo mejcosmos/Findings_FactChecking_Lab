@@ -29,14 +29,9 @@ execute:
 
 ## Part 1: Fact-check a news story
 
-This dataset was sourced frm the Chicago Finance Department. The data was used in a Chicago Tribune story, "Downtown bike- and bus-lane ticketing program generates more than 3,500 warnings and violations in its first weeks" by Sarah Freishtat, on the Smart Streets pilot program. 
+This dataset was sourced frm the Chicago Finance Department. The data was used in a Chicago Tribune story, "Downtown bike- and bus-lane ticketing program generates more than 3,500 warnings and violations in its first weeks" by Sarah Freishtat, on the Smart Streets pilot program.
 
-Summarize the following:
-
-What was your methodology for reproducing the analysis?
-Did you get the same numbers as those reported in the story?
-How would you handle any potential discrepancies?
-
+To reproduce the analysis, I imported the Chicago Finance Department Smart Streets dataset into R and standardized the column names using janitor::clean_names(). I converted the date column to a Date format so I could reliably filter by time period. I then filtered the dataset to the window referenced in the story (Nov. 6 through Dec. 13, 2024) and counted the number of rows to measure total enforcement actions. To distinguish warnings from tickets, I created two logical variables based on whether the violation_description field contained the word “WARNING.” I repeated this filtering process for the first weeks of December (Dec. 1–Dec. 13) to isolate ticket counts and then used keyword matching within the violation description to categorize ticket types. All totals were produced by counting rows after applying these filters.
 
 ```{r}
 #| label: load-packages-data
@@ -78,7 +73,7 @@ df_window <- df_window |>
 
 ```
 
-"Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program."
+-   FACT CHECK 1: "Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program."
 
 ```{r}
 #| label: total-actions
@@ -91,7 +86,9 @@ fact1_total_actions
 
 ```
 
-"But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations."
+While the article states that the city issued some 3,577 warning and tickets, my analysis showed that 3,577 warnings and tickets were issues.
+
+-   FACT CHECK 2: "But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations."
 
 ```{r}
 #| label: dec-tickets-first-weeks
@@ -111,7 +108,9 @@ fact2_tickets_dec_first_weeks
 
 ```
 
-"Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show."
+I chose December 1 - 13 as the first weeks of Deceomber. As such, my analysis confirmed that 13 tickets were issued.
+
+-   FACT CHECK 3: "Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show."
 
 ```{r}
 #| label: warnings-in-window
@@ -149,33 +148,109 @@ fact3_bike_lane_tickets <- tickets_dec %>% filter(ticket_type == "bike_lane") %>
 
 fact3_bus_lane_tickets
 
+fact3_bike_lane_tickets
+
 ```
 
-:::
+In my analysis, it shows that 3,571 warnings were issued during the first weeks of the program. However, my analysis confirmed that 8 were bus lane violations and 5 were bike lane violations.
 
+if records were corrected after publication, or if slightly different date interpretations were applied. Rather than adjusting the count to force a match, the more transparent approach is to report the verifiable number from the dataset analyzed and clearly explain the possible reasons for the discrepancy.
+
+:::
 
 :::
 
 ### Part 2: Extend your fact-check to another data set
-This dataset was sourced frm the Chicago Finance Department. The data was used in a Streetsblog Chicago article, "Stay in your lane or pay the fine" by John Greenfield, on the Smart Streets pilot program.
+
+This dataset was sourced frm the Chicago Finance Department, and the data was used in a Streetsblog Chicago article, "Stay in your lane or pay the fine" by John Greenfield, on the Smart Streets pilot program.
+
+-   Copy the paragraphs and images from the story into your doc, highlighting the facts that you checked. Describe your process.
+
+-   Flag any discrepancies or anything that seemed unclear.
+
+-   Were there any data-driven facts in the story that you couldn't check? What would be your next steps if you were fact-checking this story?
+
+-   FACT CHECK 1: "The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period."
+
+```{r}
+#| label: street-data-cta-bus
+#| echo: true 
+
+library(readxl)
+library(dplyr)
+library(lubridate)
+library(janitor)
+library(stringr)
+
+smart_streets_data <- read_excel(
+  "DATA_PART2/FOIA_Keifer_Smart_Streets_Data_01052026.xlsx"
+) |> 
+  clean_names()
+
+```
+
+```{r}
+#| label: street-data-cta-bus-1
+#| echo: true 
+
+smart_streets_data <- smart_streets_data |>
+  mutate(issue_day = as.Date(issue_date))
+
+date_window <- smart_streets_data |>
+  filter(issue_day >= as.Date("2025-11-14"),
+         issue_day <= as.Date("2025-12-31"))
+
+cta_bus <- date_window |>
+  filter(!str_detect(speed_camera_id, "^FI"),
+         !str_detect(speed_camera_id, "^DT"))
+
+nrow(cta_bus)
 
 
-"The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period."
+```
 
-"Although most initial enforcement were no-cost warnings, the bus cameras captured 2,204 incidents, 617 of which came with a fine, dictated by violation type. The City netted $65,000 in the period, half a million dollars if extrapolated to a full year at the same rate. Scaled up on more routes and more of the city, the program would have no problem paying for itself."
+-   FACT CHECK 2: "Although most initial enforcement were no-cost warnings, the bus cameras captured 2,204 incidents, 617 of which came with a fine, dictated by violation type. The City netted \$65,000 in the period, half a million dollars if extrapolated to a full year at the same rate. Scaled up on more routes and more of the city, the program would have no problem paying for itself."
 
-"The cost to deploy the system on the first six buses is $315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras," said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements. 
+```{r}
+#| label: fine-incidents
+#| echo: true 
 
-"Overall, the Smart Streets program total has issued 44,390 warnings and violations. To reiterate, this is only with eight DOF vehicles and 6 buses equipped with the technology, indicating how common this really is. The intent is to dissuade this behavior for the benefit of all users, primarily the most vulnerable like pedestrians and cyclists." 
+# set the date window
+date_window <- smart_streets_data |>
+  mutate(issue_day = as.Date(issue_date)) |>
+  filter(issue_day >= as.Date("2025-11-14"),
+         issue_day <= as.Date("2025-12-31"))
 
+# CTA bus cameras 
+cta_bus <- date_window |>
+  filter(!str_detect(speed_camera_id, "^FI"),
+         !str_detect(speed_camera_id, "^DT"))
+
+# fined count check
+sum(cta_bus$fine_level_1 > 0, na.rm = TRUE)
+
+
+```
+
+To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, closely matching the CTA’s reported 2,204 incidents. This indicates that numeric camera IDs correspond to bus-mounted cameras, while FI and DT prefixes represent vehicle-mounted CDOT/DOF systems.
+
+-   FACT CHECK 3: "Overall, the Smart Streets program total has issued 44,390 warnings and violations. To reiterate, this is only with eight DOF vehicles and 6 buses equipped with the technology, indicating how common this really is. The intent is to dissuade this behavior for the benefit of all users, primarily the most vulnerable like pedestrians and cyclists."
+
+```{r}
+#| label: total-warnings-violations
+#| echo: true 
+
+nrow(smart_streets_data)
+
+```
+
+--\> Crash data
 
 "Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it's not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future."
 
-"This data is well visualized with the Chicago Crash Dashboard, created by Michael McLean from Strong Towns Chicago. He estimated that downtown collisions resulted in roughly $240 million in economic costs."
+--\> Cost "The cost to deploy the system on the first six buses is \$315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras," said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements.
 
-
---> Crash data
-
+"This data is well visualized with the Chicago Crash Dashboard, created by Michael McLean from Strong Towns Chicago. He estimated that downtown collisions resulted in roughly \$240 million in economic costs."
 
 :::
 
@@ -183,18 +258,11 @@ This dataset was sourced frm the Chicago Finance Department. The data was used i
 
 ### Part 3: Exchange lab work
 
-
-
-ASK SOMEONE TO EXCHANGE IN CLASS 
-
-
-Exchange a lab assignment with another student. Share your source data and data diary, explaining your general process for arriving at your findings. See if you can verify each other's work.
+I shared my qmd and HTML with Dina Drogin.
 
 Summarize your process in a paragraph or two.
 
-
 :::
-
 
 :::
 
@@ -202,8 +270,4 @@ Summarize your process in a paragraph or two.
 
 Based on the labs and readings, what are three best practices you'll keep in mind when fact-checking data-driven work for publication?
 
-
 :::
-
-
-
