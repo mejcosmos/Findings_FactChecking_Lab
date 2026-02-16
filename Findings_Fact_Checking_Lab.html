@@ -3091,10 +3091,18 @@ vertical-align: -.125em;
   <ul>
   <li><a href="#part-1-fact-check-a-news-story" id="toc-part-1-fact-check-a-news-story" class="nav-link active" data-scroll-target="#part-1-fact-check-a-news-story">Part 1: Fact-check a news story</a>
   <ul>
-  <li><a href="#part-2-extend-your-fact-check-to-another-data-set" id="toc-part-2-extend-your-fact-check-to-another-data-set" class="nav-link" data-scroll-target="#part-2-extend-your-fact-check-to-another-data-set">Part 2: Extend your fact-check to another data set</a></li>
+  <li><a href="#fact-check-1" id="toc-fact-check-1" class="nav-link" data-scroll-target="#fact-check-1">Fact-check 1:</a></li>
+  <li><a href="#fact-check-2" id="toc-fact-check-2" class="nav-link" data-scroll-target="#fact-check-2">Fact-check 2:</a></li>
+  <li><a href="#fact-check-3" id="toc-fact-check-3" class="nav-link" data-scroll-target="#fact-check-3">Fact-check 3:</a></li>
+  </ul></li>
+  <li><a href="#part-2-extend-your-fact-check-to-another-data-set" id="toc-part-2-extend-your-fact-check-to-another-data-set" class="nav-link" data-scroll-target="#part-2-extend-your-fact-check-to-another-data-set">Part 2: Extend your fact-check to another data set</a>
+  <ul>
+  <li><a href="#fact-check-1-1" id="toc-fact-check-1-1" class="nav-link" data-scroll-target="#fact-check-1-1">Fact-check 1:</a></li>
+  <li><a href="#fact-check-2-1" id="toc-fact-check-2-1" class="nav-link" data-scroll-target="#fact-check-2-1">Fact-check 2:</a></li>
+  <li><a href="#fact-check-3-1" id="toc-fact-check-3-1" class="nav-link" data-scroll-target="#fact-check-3-1">Fact-check 3:</a></li>
+  </ul></li>
   <li><a href="#part-3-exchange-lab-work" id="toc-part-3-exchange-lab-work" class="nav-link" data-scroll-target="#part-3-exchange-lab-work">Part 3: Exchange lab work</a></li>
   <li><a href="#part-4-best-practices" id="toc-part-4-best-practices" class="nav-link" data-scroll-target="#part-4-best-practices">Part 4: Best practices</a></li>
-  </ul></li>
   </ul>
 </nav>
 </div>
@@ -3151,9 +3159,9 @@ GitHub Repo Link
 <section id="part-1-fact-check-a-news-story" class="level2">
 <h2 class="anchored" data-anchor-id="part-1-fact-check-a-news-story">Part 1: Fact-check a news story</h2>
 <p>This dataset was sourced frm the Chicago Finance Department. The data was used in a Chicago Tribune story, “Downtown bike- and bus-lane ticketing program generates more than 3,500 warnings and violations in its first weeks” by Sarah Freishtat, on the Smart Streets pilot program.</p>
-<p>Summarize the following:</p>
-<p>What was your methodology for reproducing the analysis? Did you get the same numbers as those reported in the story? How would you handle any potential discrepancies?</p>
-<p>To reproduce the analysis, I imported the Chicago Finance Department Smart Streets dataset into R and standardized the column names using janitor::clean_names(). I converted the date column to a Date format so I could reliably filter by time period. I then filtered the dataset to the window referenced in the story (Nov. 6 through Dec. 13, 2024) and counted the number of rows to measure total enforcement actions. To distinguish warnings from tickets, I created two logical variables based on whether the violation_description field contained the word “WARNING.” I repeated this filtering process for the first weeks of December (Dec. 1–Dec. 13) to isolate ticket counts and then used keyword matching (“BUS LANE,” “BIKE,” or “BICYCLE”) within the violation description to categorize ticket types. All totals were produced by counting rows after applying these filters, rather than relying on any pre-aggregated summaries.</p>
+<p>To reproduce the analysis, I imported the Chicago Finance Department Smart Streets dataset into R and standardized the column names using janitor::clean_names(). I converted the date column to a Date format so I could reliably filter by time period. I then filtered the dataset to the window referenced in the story (Nov. 6 through Dec. 13, 2024) and counted the number of rows to measure total enforcement actions. To distinguish warnings from tickets, I created two logical variables based on whether the violation_description field contained the word “WARNING.” I repeated this filtering process for the first weeks of December (Dec. 1–Dec. 13) to isolate ticket counts and then used keyword matching within the violation description to categorize ticket types. All totals were produced by counting rows after applying these filters.</p>
+<section id="fact-check-1" class="level4">
+<h4 class="anchored" data-anchor-id="fact-check-1">Fact-check 1:</h4>
 <ul>
 <li>“Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program.”</li>
 </ul>
@@ -3163,6 +3171,9 @@ GitHub Repo Link
 </div>
 </div>
 <p>While the article states that the city issued some 3,577 warning and tickets, my analysis showed that 3,577 warnings and tickets were issues.</p>
+</section>
+<section id="fact-check-2" class="level4">
+<h4 class="anchored" data-anchor-id="fact-check-2">Fact-check 2:</h4>
 <ul>
 <li>“But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations.”</li>
 </ul>
@@ -3172,6 +3183,9 @@ GitHub Repo Link
 </div>
 </div>
 <p>I chose December 1 - 13 as the first weeks of Deceomber. As such, my analysis confirmed that 13 tickets were issued.</p>
+</section>
+<section id="fact-check-3" class="level4">
+<h4 class="anchored" data-anchor-id="fact-check-3">Fact-check 3:</h4>
 <ul>
 <li>“Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show.”</li>
 </ul>
@@ -3192,15 +3206,21 @@ GitHub Repo Link
 <p>if records were corrected after publication, or if slightly different date interpretations were applied. Rather than adjusting the count to force a match, the more transparent approach is to report the verifiable number from the dataset analyzed and clearly explain the possible reasons for the discrepancy.</p>
 <p>:::</p>
 <p>:::</p>
-<section id="part-2-extend-your-fact-check-to-another-data-set" class="level3">
-<h3 class="anchored" data-anchor-id="part-2-extend-your-fact-check-to-another-data-set">Part 2: Extend your fact-check to another data set</h3>
+</section>
+</section>
+<section id="part-2-extend-your-fact-check-to-another-data-set" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-extend-your-fact-check-to-another-data-set">Part 2: Extend your fact-check to another data set</h2>
 <p>This dataset was sourced frm the Chicago Finance Department, and the data was used in a Streetsblog Chicago article, “Stay in your lane or pay the fine” by John Greenfield, on the Smart Streets pilot program.</p>
 <ul>
-<li>Copy the paragraphs and images from the story into your doc, highlighting the facts that you checked. Describe your process.</li>
-<li>Flag any discrepancies or anything that seemed unclear.</li>
-<li>Were there any data-driven facts in the story that you couldn’t check? What would be your next steps if you were fact-checking this story?</li>
+<li><p>Copy the paragraphs and images from the story into your doc, highlighting the facts that you checked. Describe your process.</p></li>
+<li><p>Flag any discrepancies or anything that seemed unclear.</p></li>
+<li><p>Were there any data-driven facts in the story that you couldn’t check? What would be your next steps if you were fact-checking this story?</p></li>
 </ul>
-<p>MY ANSWERS: “The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period.”</p>
+<section id="fact-check-1-1" class="level4">
+<h4 class="anchored" data-anchor-id="fact-check-1-1">Fact-check 1:</h4>
+<ul>
+<li>“The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period.”</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -3230,7 +3250,12 @@ GitHub Repo Link
 <pre><code>[1] 2203</code></pre>
 </div>
 </div>
-<p>“Although most initial enforcement were no-cost warnings, the bus cameras captured 2,204 incidents, 617 of which came with a fine, dictated by violation type. The City netted $65,000 in the period, half a million dollars if extrapolated to a full year at the same rate. Scaled up on more routes and more of the city, the program would have no problem paying for itself.”</p>
+</section>
+<section id="fact-check-2-1" class="level4">
+<h4 class="anchored" data-anchor-id="fact-check-2-1">Fact-check 2:</h4>
+<ul>
+<li>“Although most initial enforcement were no-cost warnings, the bus cameras captured 2,204 incidents, 617 of which came with a fine, dictated by violation type.”</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set the date window</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>date_window <span class="ot">&lt;-</span> smart_streets_data <span class="sc">|&gt;</span></span>
@@ -3249,7 +3274,10 @@ GitHub Repo Link
 <pre><code>[1] 615</code></pre>
 </div>
 </div>
-<p>To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, closely matching the CTA’s reported 2,204 incidents. This indicates that numeric camera IDs correspond to bus-mounted cameras, while FI and DT prefixes represent vehicle-mounted CDOT/DOF systems.</p>
+<p>To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, as opposed to the reported 2,204 incidents in the article.</p>
+</section>
+<section id="fact-check-3-1" class="level4">
+<h4 class="anchored" data-anchor-id="fact-check-3-1">Fact-check 3:</h4>
 <ul>
 <li>“Overall, the Smart Streets program total has issued 44,390 warnings and violations. To reiterate, this is only with eight DOF vehicles and 6 buses equipped with the technology, indicating how common this really is. The intent is to dissuade this behavior for the benefit of all users, primarily the most vulnerable like pedestrians and cyclists.”</li>
 </ul>
@@ -3259,25 +3287,28 @@ GitHub Repo Link
 <pre><code>[1] 51165</code></pre>
 </div>
 </div>
-<p>–&gt; Crash data</p>
-<p>“Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it’s not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future.”</p>
-<p>–&gt; Cost “The cost to deploy the system on the first six buses is $315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras,” said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements.</p>
-<p>“This data is well visualized with the Chicago Crash Dashboard, created by Michael McLean from Strong Towns Chicago. He estimated that downtown collisions resulted in roughly $240 million in economic costs.”</p>
+<p>Similarly, while the article states that the Smart Streets program total has issued 44,390 warnings and violations, my analysis showed that there were 51,165 warnings and violations.</p>
+<p>While I do not have access to the crash data nor the figures that include cost of buses and other operational cost, if I did have access to these data sets, it would be interesting to fact check the following claims:</p>
+<ul>
+<li><p>“Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it’s not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future.”</p></li>
+<li><p>“The cost to deploy the system on the first six buses is $315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras,” said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements.</p></li>
+<li><p>“This data is well visualized with the Chicago Crash Dashboard, created by Michael McLean from Strong Towns Chicago. He estimated that downtown collisions resulted in roughly $240 million in economic costs.”</p></li>
+</ul>
 <p>:::</p>
 <p>:::</p>
 </section>
-<section id="part-3-exchange-lab-work" class="level3">
-<h3 class="anchored" data-anchor-id="part-3-exchange-lab-work">Part 3: Exchange lab work</h3>
+</section>
+<section id="part-3-exchange-lab-work" class="level1">
+<h1>Part 3: Exchange lab work</h1>
 <p>I shared my qmd and HTML with Dina Drogin.</p>
 <p>Summarize your process in a paragraph or two.</p>
 <p>:::</p>
 <p>:::</p>
 </section>
-<section id="part-4-best-practices" class="level3">
-<h3 class="anchored" data-anchor-id="part-4-best-practices">Part 4: Best practices</h3>
+<section id="part-4-best-practices" class="level1">
+<h1>Part 4: Best practices</h1>
 <p>Based on the labs and readings, what are three best practices you’ll keep in mind when fact-checking data-driven work for publication?</p>
 <p>:::</p>
-</section>
 </section>
 
 </main>

@@ -73,7 +73,9 @@ df_window <- df_window |>
 
 ```
 
--   FACT CHECK 1: "Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program."
+#### Fact-check 1:
+
+-   "Between Nov. 6 and Dec. 13, the city issued some 3,577 warnings and tickets to parking scofflaws under the new Smart Streets pilot program."
 
 ```{r}
 #| label: total-actions
@@ -88,7 +90,9 @@ fact1_total_actions
 
 While the article states that the city issued some 3,577 warning and tickets, my analysis showed that 3,577 warnings and tickets were issues.
 
--   FACT CHECK 2: "But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations."
+#### Fact-check 2:
+
+-   "But the city did issue 13 tickets in the first weeks of December, the data show, which would have been given for repeat violations."
 
 ```{r}
 #| label: dec-tickets-first-weeks
@@ -110,7 +114,9 @@ fact2_tickets_dec_first_weeks
 
 I chose December 1 - 13 as the first weeks of Deceomber. As such, my analysis confirmed that 13 tickets were issued.
 
--   FACT CHECK 3: "Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show."
+#### Fact-check 3:
+
+-   "Even so, the city issued at least 3,564 warnings in the first weeks of the program. Of the tickets issued, eight were for bus lane infractions and five were for bike lane violations, the data show."
 
 ```{r}
 #| label: warnings-in-window
@@ -160,7 +166,7 @@ if records were corrected after publication, or if slightly different date inter
 
 :::
 
-### Part 2: Extend your fact-check to another data set
+## Part 2: Extend your fact-check to another data set
 
 This dataset was sourced frm the Chicago Finance Department, and the data was used in a Streetsblog Chicago article, "Stay in your lane or pay the fine" by John Greenfield, on the Smart Streets pilot program.
 
@@ -170,7 +176,9 @@ This dataset was sourced frm the Chicago Finance Department, and the data was us
 
 -   Were there any data-driven facts in the story that you couldn't check? What would be your next steps if you were fact-checking this story?
 
--   FACT CHECK 1: "The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period."
+#### Fact-check 1:
+
+-   "The CTA said that from from Nov 14 to Dec 31, 2025, there were over 2,200 warnings and violations from bus-mounted enforcement alone. Here is the data from both CDOT/DOF vehicle-mounted cameras and CTA bus-mounted cameras for that period."
 
 ```{r}
 #| label: street-data-cta-bus
@@ -209,7 +217,9 @@ nrow(cta_bus)
 
 ```
 
--   FACT CHECK 2: "Although most initial enforcement were no-cost warnings, the bus cameras captured 2,204 incidents, 617 of which came with a fine, dictated by violation type. The City netted \$65,000 in the period, half a million dollars if extrapolated to a full year at the same rate. Scaled up on more routes and more of the city, the program would have no problem paying for itself."
+#### Fact-check 2:
+
+-   "Although most initial enforcement were no-cost warnings, the bus cameras captured 2,204 incidents, 617 of which came with a fine, dictated by violation type."
 
 ```{r}
 #| label: fine-incidents
@@ -232,9 +242,11 @@ sum(cta_bus$fine_level_1 > 0, na.rm = TRUE)
 
 ```
 
-To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, closely matching the CTA’s reported 2,204 incidents. This indicates that numeric camera IDs correspond to bus-mounted cameras, while FI and DT prefixes represent vehicle-mounted CDOT/DOF systems.
+To isolate CTA bus-mounted enforcement, I grouped records by camera ID prefix and found that numeric-only IDs accounted for 2,203 incidents during the period, as opposed to the reported 2,204 incidents in the article.
 
--   FACT CHECK 3: "Overall, the Smart Streets program total has issued 44,390 warnings and violations. To reiterate, this is only with eight DOF vehicles and 6 buses equipped with the technology, indicating how common this really is. The intent is to dissuade this behavior for the benefit of all users, primarily the most vulnerable like pedestrians and cyclists."
+#### Fact-check 3:
+
+-   "Overall, the Smart Streets program total has issued 44,390 warnings and violations. To reiterate, this is only with eight DOF vehicles and 6 buses equipped with the technology, indicating how common this really is. The intent is to dissuade this behavior for the benefit of all users, primarily the most vulnerable like pedestrians and cyclists."
 
 ```{r}
 #| label: total-warnings-violations
@@ -244,19 +256,21 @@ nrow(smart_streets_data)
 
 ```
 
---\> Crash data
+Similarly, while the article states that the Smart Streets program total has issued 44,390 warnings and violations, my analysis showed that there were 51,165 warnings and violations.
 
-"Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it's not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future."
+While I do not have access to the crash data nor the figures that include cost of buses and other operational cost, if I did have access to these data sets, it would be interesting to fact check the following claims:
 
---\> Cost "The cost to deploy the system on the first six buses is \$315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras," said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements.
+-   "Reducing conflicts between people on foot, bikes, and buses, and in delivery and passenger vehicles, is not easy in tight spaces. The pilot area is home to many businesses, homes, and amenities. With so much activity, it's not surprising the area sees over 12,000 crashes a year. A renewed focus on safety can’t bring back the four vulnerable road users who were fatally struck in the CBD in 2025. But it can pave the way for a safer future."
 
-"This data is well visualized with the Chicago Crash Dashboard, created by Michael McLean from Strong Towns Chicago. He estimated that downtown collisions resulted in roughly \$240 million in economic costs."
+-   "The cost to deploy the system on the first six buses is \$315,852 including equipment and ongoing services; the contract includes the option to purchase up to 94 additional cameras," said a March 2025 CTA news release, previewing the launch later that year. Currently, the transit agency is not retaining the revenue. Other cities with the program at larger scale have revenue sharing. this would allow the CTA to use ticket fees to implement more dedicated bus lanes, and make other transit improvements.
+
+-   "This data is well visualized with the Chicago Crash Dashboard, created by Michael McLean from Strong Towns Chicago. He estimated that downtown collisions resulted in roughly \$240 million in economic costs."
 
 :::
 
 :::
 
-### Part 3: Exchange lab work
+# Part 3: Exchange lab work
 
 I shared my qmd and HTML with Dina Drogin.
 
@@ -266,7 +280,7 @@ Summarize your process in a paragraph or two.
 
 :::
 
-### Part 4: Best practices
+# Part 4: Best practices
 
 Based on the labs and readings, what are three best practices you'll keep in mind when fact-checking data-driven work for publication?
 
